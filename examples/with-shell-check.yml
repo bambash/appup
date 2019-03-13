@@ -1,0 +1,44 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: appup
+        image: bambash/appup:latest
+        imagePullPolicy: Always
+        lifecycle:
+          ## create the up.txt when pod is created
+          postStart:
+            exec:
+              command: ['/bin/sh', '-c', 'touch /pod/up.txt']
+        volumeMounts:
+        - name: pod
+          mountPath: /pod
+        ports:
+        - containerPort: 9999
+      - name: nginx
+        image: nginx
+        imagePullPolicy: Always
+        lifecycle:
+          ## remove the up.txt when kill signal received
+          preStop:
+            exec:
+              command: ['/bin/sh', '-c', 'rm /pod/up.txt']
+        ## probe via shell
+        readinessProbe:
+          exec:
+            command:
+            - cat
+            - /pod/up.txt
+        volumeMounts:
+        - name: pod
+          mountPath: /pod
+      volumes:
+      - name: pod
+        emptyDir: {}
