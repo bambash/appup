@@ -25,8 +25,7 @@ Kubernetes probe using shell
           ## create the up.txt when pod is created
           postStart:
             exec:
-              command: ['touch']
-              args: ['/pod/up.txt']
+              command: ['/bin/sh', '-c', 'touch /pod/up.txt']
         ## mount pod volume
         volumeMounts:
         - name: pod
@@ -40,18 +39,13 @@ Kubernetes probe using shell
           ## remove the up.txt when kill signal received
           preStop:
             exec:
-              command: ['rm']
-              args: ['-f', '/pod/up.txt']
+              command: ['/bin/sh', '-c', 'rm /pod/up.txt']
         ## probe via shell
         readinessProbe:
           exec:
             command:
             - cat
             - /pod/up.txt
-            initialDelaySeconds: 10
-            successThreshold: 3
-            periodSeconds: 1
-            failureThreshold: 1
         ## mount pod volume
         volumeMounts:
         - name: pod
@@ -74,8 +68,7 @@ Kubernetes probe using HTTP
           ## create the up.txt when pod is created
           postStart:
             exec:
-              command: ['touch']
-              args: ['/pod/up.txt']
+              command: ['/bin/sh', '-c', 'touch /pod/up.txt']
         volumeMounts:
         - name: pod
           mountPath: /pod
@@ -88,8 +81,7 @@ Kubernetes probe using HTTP
           ## remove the up.txt when kill signal received
           preStop:
             exec:
-              command: ['rm']
-              args: ['-f', '/pod/up.txt']
+              command: ['/bin/sh', '-c', 'rm /pod/up.txt']
         ## probe via http
         readinessProbe:
           failureThreshold: 1
