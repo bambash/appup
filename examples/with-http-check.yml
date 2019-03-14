@@ -17,6 +17,10 @@ spec:
           postStart:
             exec:
               command: ['/bin/sh', '-c', 'touch /pod/up.txt']
+          ## remove the up.txt when kill signal received
+          preStop:
+            exec:
+              command: ['/bin/sh', '-c', 'rm -f /pod/up.txt']
         volumeMounts:
         - name: pod
           mountPath: /pod
@@ -25,11 +29,6 @@ spec:
       - name: nginx
         image: nginx
         imagePullPolicy: Always
-        lifecycle:
-          ## remove the up.txt when kill signal received
-          preStop:
-            exec:
-              command: ['/bin/sh', '-c', 'rm /pod/up.txt']
         ## probe via http
         readinessProbe:
           failureThreshold: 1
@@ -37,8 +36,8 @@ spec:
            path: /health
            port: 9999
            scheme: HTTP
-          periodSeconds: 10
-          successThreshold: 3
+          periodSeconds: 1
+          successThreshold: 1
           timeoutSeconds: 1
         volumeMounts:
         - name: pod
