@@ -1,4 +1,5 @@
 # appup
+---
 This simple webapp was designed to run as a sidecar container inside of Kubernetes pods. It is intended to serve as a traffic controller switch for applications that do not have native health checks. Think of this as a circuit breaker. __Do not use this as a replacement for applications with proper health/liveness built in.__
 
 The goal was to create a small python webserver using the native libraries that listens on 3 endpoints:
