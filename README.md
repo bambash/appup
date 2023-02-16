@@ -151,3 +151,5 @@ Operators will need to fully understand the implicatons of controlling  upime ma
 
 ## why?
 In a perfect world all applications have health checking and this would not be needed. However, I've experienced some pains when trying to control uptime on applications that have been migrated into Kubernetes that do not have a simple way to do health checks. The code owners for these apps usually don't have the time, experience, or business support to implement native health checks.
+
+
